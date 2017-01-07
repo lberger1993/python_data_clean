@@ -11,7 +11,7 @@ Download code base
 
 `cd python_data_clean `
 
-`python query_analysis.py `
+`python query_analysis.py`
 
 ## History
 
