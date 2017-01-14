@@ -3,6 +3,8 @@
 
 import csv
 import pandas as pd
+import numpy as np
+import math 
 
 raw_data_source = open('myData.csv', 'r')
 significant_data_source = open('significantData.csv', 'w')
@@ -113,11 +115,48 @@ def findBins():
     df = df.sort_values('RecordingTimestamp')
     df.to_csv('significantData.csv', index=False)
     read_in = pd.read_csv('significantData.csv')
+    count = 0
+    this = []
+    return_bins = {}
+    word = (read_in['AOI[Neutral_Left]Hit_0']).tolist()
+    
+    if word[0] == '1':
+        return_bins.update({'start_value': 1})
+    else: 
+        return_bins.update({'start_value': 0})
+    for v, w in zip(word[:-1], word[1:]):
+        if v == w and v != '': 
+            print v
+            count = count + 1
+        else: 
+            total = count
+            this.append(count)
+        my_list = sorted(list(set(this)))
+    return_bins.update({'my_list': my_list})
+    return return_bins
+
+def findSignificantBins(return_bins):
+    
+    length = len(return_bins)
+    print("My list {} {}: ".format(return_bins['start_value'], return_bins['my_list']))
+    if (return_bins.get('start_value') == 0) : 
+        print("need to eval")
+        #print(np.subtract(my_list[my_list[1]], my_list[my_list[0]]))
+    #length = len(my_list)
+    #print(np.subtract(my_list[1], my_list[0]))
+    #print(np.subtract(my_list[2], my_list[1]))
+    #print(np.subtract(my_list[3], my_list[2]))
+
+
+def find_conseq_avg():
+    print("Blah")
+
 
 if __name__ == '__main__':
     count_dict = cleanCsv()
     findTotalTime(count_dict)
-    findBins()
+    my_list = findBins()
+    findSignificantBins (my_list)
     significant_data_source.close()
     raw_data_source.close()
 
