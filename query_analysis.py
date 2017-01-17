@@ -14,7 +14,10 @@ significant_data = csv.DictWriter(significant_data_source, None)
 
 def cleanCsv():
 
-    # declares count of each row
+    """
+    Return the count of each row 
+    return dict: {count_emotion: key} 
+    """ 
 
     count_neutral = 0
     count_sad = 0
@@ -109,7 +112,12 @@ def findAverageDuration():
 
     print("not sure what will go here ?")
 
-def findBins(): 
+def findBins():
+    
+    """
+    Return the dictionary of rows in order 
+    return dict: {starting_value: key, my_list: [keys]} 
+    """ 
 
     df = pd.read_csv('significantData.csv')
     df = df.sort_values('RecordingTimestamp')
@@ -137,16 +145,27 @@ def findBins():
 
 def findSignificantBins(return_bins):
     
-    length = len(return_bins)
-    print("My list {} {}: ".format(return_bins['start_value'], return_bins['my_list']))
-    if (return_bins.get('start_value') == 0) : 
-        print("need to eval")
-        #print(np.subtract(my_list[my_list[1]], my_list[my_list[0]]))
-    #length = len(my_list)
-    #print(np.subtract(my_list[1], my_list[0]))
-    #print(np.subtract(my_list[2], my_list[1]))
-    #print(np.subtract(my_list[3], my_list[2]))
+    """
+    Return the consequative values of even and odd rows 
+    """
+    
+    count = 0
+    range_even = []
+    range_odd = []
+    for i in xrange(1,len(return_bins['my_list'])):
+        value_range = (return_bins['my_list'][i] - return_bins['my_list'][(i-1)])
+        count = count + 1
+        if (count % 2 == 0) :
+            range_even.append(value_range)
+        else: 
+            range_odd.append(value_range)
 
+    print "This is the even {}".format(range_even)
+    print "This is the odd {}".format(range_odd)
+    if (return_bins.get('start_value') == 0) : 
+        return range_even
+    else:
+        return range_odd
 
 def find_conseq_avg():
     print("Blah")
